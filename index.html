@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Solar Devices</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Link to Font Awesome for icons -->
+</head>
+<body>
+    <div class="container">
+        <h1>Connect Solar Devices</h1>
+        <button id="scanButton">Scan for Devices</button>
+        <div class="search-container"> <!-- Wrapped input field and icon in a container -->
+            <input id="optionalServices" type="text" list="services" size="40" placeholder="Search Solar Panel" class="search-input">
+            <i class="fas fa-search search-icon"></i> <!-- Added magnifying glass icon -->
+        </div>
+        <button type="button" id="discoverButton">Settings</button>
+        <datalist id="services">
+            <!-- Datalist is now empty -->
+        </datalist>
+        <div id="log"></div>
+    </div>
+    <div class="home-container">
+        <img src="home.png" alt="Modern Home" class="home">
+    </div>
+    <div class="sun-moon"></div>
+    <div class="cloud"></div>
+    <div class="solar-info modern-box" id="solarInfo">
+        <h2>Solar Panel Information</h2>
+        <p id="energyUsage">Energy Usage: -- kW</p>
+        <p id="batteryStatus">Battery Status: -- %</p>
+        <p id="panelEfficiency">Panel Efficiency: -- %</p>
+        <p id="gridStatus">Grid Status: --</p>
+    </div>
+    <script>
+        document.getElementById('scanButton').addEventListener('click', onScanButtonClick);
+        document.getElementById('discoverButton').addEventListener('click', onDiscoverButtonClick);
+
+        let selectedDevice = null;
+
+        function onScanButtonClick() {
+            log('Connecting Solaer Panel...');
+            navigator.bluetooth.requestDevice({
+                acceptAllDevices: true,
+                optionalServices: ['0000180a-0000-1000-8000-00805f9b34fb'] // Example service UUID
+            })
+            .then(device => {
+                log('Device selected: ' + device.name);
+                selectedDevice = device;
+                selectedDevice.addEventListener('gattserverdisconnected', onDisconnected);
+                log('Connecting to GATT Server...');
+                return device.gatt.connect();
+            })
+            .then(server => {
+                log('Getting Services...');
+                return server.getPrimaryServices();
+            })
+            .then(services => {
+                log('Getting Characteristics...');
+                let queue = Promise.resolve();
+                services.forEach(service => {
+                    queue = queue.then(() => service.getCharacteristics().then(characteristics => {
+                        log('> Service: ' + service.uuid);
+                        characteristics.forEach(characteristic => {
+                            log('>> Characteristic: ' + characteristic.uuid + ' ' + getSupportedProperties(characteristic));
+                            if (characteristic.uuid === 'specific-energy-usage-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let energy = value.getUint8(0); // assuming energy usage is stored in the first byte
+                                    energyUsage.textContent = 'Energy Usage: ' + energy + ' kW';
+                                }).catch(error => {
+                                    log('Error reading energy usage: ' + error);
+                                });
+                            }
+                            if (characteristic.uuid === 'specific-battery-status-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let battery = value.getUint8(0); // assuming battery status is stored in the first byte
+                                    batteryStatus.textContent = 'Battery Status: ' + battery + ' %';
+                                }).catch(error => {
+                                    log('Error reading battery status: ' + error);
+                                });
+                            }
+                            if (characteristic.uuid === 'specific-panel-efficiency-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let efficiency = value.getUint8(0); // assuming panel efficiency is stored in the first byte
+                                    panelEfficiency.textContent = 'Panel Efficiency: ' + efficiency + ' %';
+                                }).catch(error => {
+                                    log('Error reading panel efficiency: ' + error);
+                                });
+                            }
+                            if (characteristic.uuid === 'specific-grid-status-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let grid = value.getUint8(0); // assuming grid status is stored in the first byte
+                                    gridStatus.textContent = 'Grid Status: ' + grid;
+                                }).catch(error => {
+                                    log('Error reading grid status: ' + error);
+                                });
+                            }
+                        });
+                    }));
+                });
+                return queue;
+            })
+            .then(() => {
+                // Show the solar information immediately after connecting
+                solarInfo.style.display = 'block';
+            })
+            .catch(error => {
+                log('Error: ' + error);
+            });
+        }
+
+        function onDisconnected() {
+            log('Device disconnected');
+            selectedDevice = null;
+        }
+
+        function onDiscoverButtonClick() {
+            if (!selectedDevice) {
+                log('No device selected. Please scan for devices first.');
+                return;
+            }
+
+            log('Connecting to GATT Server...');
+            selectedDevice.gatt.connect()
+            .then(server => {
+                log('Getting Services...');
+                return server.getPrimaryServices();
+            })
+            .then(services => {
+                log('Getting Characteristics...');
+                let queue = Promise.resolve();
+                services.forEach(service => {
+                    queue = queue.then(() => service.getCharacteristics().then(characteristics => {
+                        log('> Service: ' + service.uuid);
+                        characteristics.forEach(characteristic => {
+                            log('>> Characteristic: ' + characteristic.uuid + ' ' + getSupportedProperties(characteristic));
+                            if (characteristic.uuid === 'specific-energy-usage-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let energy = value.getUint8(0); // assuming energy usage is stored in the first byte
+                                    energyUsage.textContent = 'Energy Usage: ' + energy + ' kW';
+                                }).catch(error => {
+                                    log('Error reading energy usage: ' + error);
+                                });
+                            }
+                            if (characteristic.uuid === 'specific-battery-status-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let battery = value.getUint8(0); // assuming battery status is stored in the first byte
+                                    batteryStatus.textContent = 'Battery Status: ' + battery + ' %';
+                                }).catch(error => {
+                                    log('Error reading battery status: ' + error);
+                                });
+                            }
+                            if (characteristic.uuid === 'specific-panel-efficiency-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let efficiency = value.getUint8(0); // assuming panel efficiency is stored in the first byte
+                                    panelEfficiency.textContent = 'Panel Efficiency: ' + efficiency + ' %';
+                                }).catch(error => {
+                                    log('Error reading panel efficiency: ' + error);
+                                });
+                            }
+                            if (characteristic.uuid === 'specific-grid-status-uuid') {
+                                characteristic.readValue().then(value => {
+                                    let grid = value.getUint8(0); // assuming grid status is stored in the first byte
+                                    gridStatus.textContent = 'Grid Status: ' + grid;
+                                }).catch(error => {
+                                    log('Error reading grid status: ' + error);
+                                });
+                            }
+                        });
+                    }));
+                });
+                return queue;
+            })
+            .then(() => {
+                // Show the solar information
+                solarInfo.style.display = 'block';
+            })
+            .catch(error => {
+                log('Error: ' + error);
+            });
+        }
+
+        function getSupportedProperties(characteristic) {
+            let supportedProperties = [];
+            for (const p in characteristic.properties) {
+                if (characteristic.properties[p] === true) {
+                    supportedProperties.push(p.toUpperCase());
+                }
+            }
+            return '[' + supportedProperties.join(', ') + ']';
+        }
+
+        function log(message) {
+            console.log(message);
+            let logElement = document.getElementById('log');
+            let el = document.createElement('a');
+            el.textContent = message;
+            logElement.appendChild(el);
+            logElement.appendChild(document.createElement('br'));
+        }
+
+        // JavaScript to toggle the 'night' class based on background color
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+
+            setInterval(() => {
+                const currentBackground = getComputedStyle(body).backgroundImage;
+                if (currentBackground.includes('2B3A67')) {
+                    console.log('Night background detected. Adding night class.');
+                    body.classList.add('night');
+                } else {
+                    console.log('Day background detected. Removing night class.');
+                    body.classList.remove('night');
+                }
+            }, 10000); // Adjust timing to match your animation cycle
+        });
+    </script>
+</body>
+</html>

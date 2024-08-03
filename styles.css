@@ -1,0 +1,255 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #FFB6C1, #FFD700); /* Initial sunset color */
+    animation: dayNightCycle 20s infinite alternate;
+    position: relative; /* Add relative positioning to allow absolute positioning of stars */
+}
+
+@keyframes dayNightCycle {
+    0% {
+        background: linear-gradient(to bottom, #FFB6C1, #FFD700); /* Sunset */
+    }
+    50% {
+        background: linear-gradient(to bottom, #2B3A67, #1B2735); /* Night */
+    }
+    100% {
+        background: linear-gradient(to bottom, #FFB6C1, #FFD700); /* Sunset */
+    }
+}
+
+/* Add stars using pseudo-elements */
+body::before, body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('stars.png') repeat; /* Use the correct path to your PNG image */
+    opacity: 0; /* Initially set to 0 */
+    animation: starsMove 20s linear infinite;
+    pointer-events: none; /* Ensure stars don't block other elements */
+    transition: opacity 1s ease-in-out;
+}
+
+body::before {
+    animation-delay: 0s;
+}
+
+body::after {
+    animation-delay: 10s;
+}
+
+@keyframes starsMove {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
+
+body.night::before, body.night::after {
+    opacity: 1; /* Adjust the opacity of stars at night */
+}
+
+/* Sun and moon animation */
+.sun-moon {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: yellow;
+    box-shadow: 0 0 50px rgba(255, 255, 0, 0.5);
+    animation: sunToMoon 20s infinite alternate;
+}
+
+@keyframes sunToMoon {
+    0% {
+        background: yellow;
+        box-shadow: 0 0 50px rgba(255, 255, 0, 0.5);
+        transform: translate(-50%, 0%);
+    }
+    50% {
+        background: #f5f3ce;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+    100% {
+        background: yellow;
+        box-shadow: 0 0 50px rgba(255, 255, 0, 0.5);
+        transform: translate(-50%, 0%);
+    }
+}
+
+/* Code for glass container */
+.container {
+    background: rgba(255, 255, 255, 0);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.052);
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Adjust the gap between elements */
+}
+
+h1 {
+    color: rgb(255, 255, 255); /* Change the title color to white using RGB value */
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+button {
+    background: #ffcc00;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #e6b800;
+}
+
+/* Container for search input and icon */
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Style for search input */
+.search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px; /* Add right padding to make room for the icon */
+    border: 2px solid #fff;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    text-align: left;
+}
+
+/* Style for search icon */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 20px; /* Adjust magnifying glass inside of search container */
+    transform: translateY(-50%);
+    color: #999;
+}
+
+/* Search Solar Panel text alignment */
+form {
+    margin: 0;
+    width: 100%; /* Ensure the form takes full width */
+}
+
+#log {
+    margin-top: 20px;
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#log a {
+    display: block;
+    padding: 5px;
+   /* Took out background color for transparency */ 
+    font-size: 20px;
+    color: #fff; /* Changes the color for the log messages */
+}
+
+#log a:last-child {
+    border-bottom: none;
+}
+
+.home-container {
+    position: absolute;
+    bottom: -11%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.home {
+    width: 100%;
+    height: auto;
+}
+
+.cloud {
+    position: absolute;
+    background: url('cloud.png') no-repeat center center;
+    background-size: contain;
+    width: 200px;
+    height: 100px;
+    top: 15%;
+    left: -200px;
+    animation: moveClouds 60s linear infinite;
+}
+
+@keyframes moveClouds {
+    0% {
+        left: -200px;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.solar-info {
+    display: none;
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    right: 50px; /* Adjust as needed to move away from the edge */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px; /* Adjust width as needed */
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(246, 242, 242, 0.1);
+    z-index: 10;
+}
+
+.solar-info h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+.solar-info p {
+    margin: 5px 0;
+}
+
+.modern-box {
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(52, 52, 54, 0.353);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}

@@ -1,3 +1,52 @@
+/* Ensure welcome screen fully covers viewport */
+.welcome-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* High z-index to cover other content */
+    color: #fff;
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    transition: opacity 1s ease-in-out;
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.sign-in-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.g_id_signin iframe {
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+/* Main content is hidden initially */
+.container {
+    display: none; /* Ensure main content is hidden initially */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, visibility 0s linear 1s; /* Delay visibility change to ensure opacity transition is completed */
+}
+
+/* Additional styling for other elements */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -110,7 +159,9 @@ body.night::before, body.night::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px; /* Adjust the gap between elements */
+    gap: 20px; /* Adjust the gap between elements */
+    opacity: 0; /* Start hidden */
+    transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
 }
 
 h1 {
@@ -119,7 +170,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-button {
+button.yellow-button {
     background: #ffcc00;
     color: white;
     border: none;
@@ -128,17 +179,26 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background 0.3s;
+    margin-bottom: 30px; /* Adjust the margin to control the gap */
 }
 
-button:hover {
+button.yellow-button:hover {
     background: #e6b800;
+}
+
+button.settings-icon i {
+    font-size: 20px;
+    color: white;
+    background: none;
+    border: none;
+    padding: 0;
+    box-shadow: none;
 }
 
 /* Container for search input and icon */
 .search-container {
     position: relative;
     width: 100%;
-    max-width: 400px;
 }
 
 /* Style for search input */
@@ -151,15 +211,30 @@ button:hover {
     outline: none;
     box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
     text-align: left;
+    appearance: none; /* Remove default styling */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+    background-color: #fff;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="%23333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>'), url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'); /* Custom arrow and magnifying glass icon */
+    background-repeat: no-repeat;
+    background-position: right 10px center, right 35px center; /* Position the arrow and magnifying glass */
+    background-size: 16px, 16px;
+    cursor: pointer; /* Show pointer cursor */
+}
+
+/* Hide the default dropdown arrow in certain browsers */
+.search-container select::-ms-expand {
+    display: none;
 }
 
 /* Style for search icon */
 .search-icon {
     position: absolute;
     top: 50%;
-    right: 20px; /* Adjust magnifying glass inside of search container */
+    right: 40px; /* Adjust magnifying glass inside of search container */
     transform: translateY(-50%);
     color: #999;
+    pointer-events: none; /* Ensure the icon doesn't interfere with input events */
 }
 
 /* Search Solar Panel text alignment */
@@ -207,12 +282,13 @@ form {
     background: url('cloud.png') no-repeat center center;
     background-size: contain;
     width: 200px;
-    height: 100px;
-    top: 15%;
+    height: 300px;
+    top: 25%;
     left: -200px;
     animation: moveClouds 60s linear infinite;
 }
 
+/* Cloud animations */
 @keyframes moveClouds {
     0% {
         left: -200px;
@@ -252,4 +328,146 @@ form {
     border-radius: 10px;
     background: rgba(52, 52, 54, 0.353);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Add this to your styles.css file */
+.welcome-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: #fff;
+    opacity: 1;
+    background: rgba(0,0,0,0.7);
+    transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
+}
+
+#welcomeMessage {
+    font-size: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.weather-info {
+    font-size: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.container {
+    display: none; /* Ensure main content is hidden initially */
+    visibility: hidden;
+    opacity: 0; /* Start hidden */
+    transition: opacity 1s ease-in-out, visibility 0s linear 1s; /* Delay visibility change to ensure opacity transition is completed */
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the video covers the entire area without zooming in */
+    z-index: -1; /* Ensures the video stays in the background */
+}
+
+/* Settings Page */
+.settings-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: none; /* Hidden initially */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Above other content */
+}
+
+.settings-container {
+    background: rgba(251, 251, 251, 0.097);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/*Settings Text Colors*/
+.settings-container h2 {
+    color: #ffffff; /* Change this color to whatever you prefer */
+}
+
+.settings-container label {
+    color: #ffffff; /* Change this color to whatever you prefer */
+}
+
+.settings-container select,
+.settings-container input[type="checkbox"],
+.settings-container input[type="number"] {
+    color: #000000; /* Change this color to whatever you prefer */
+}
+
+.settings-option {
+    margin-bottom: 20px;
+}
+
+.settings-option label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.settings-option select,
+.settings-option input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+}
+
+/* Hide the default datalist dropdown */
+input[list]::-webkit-calendar-picker-indicator {
+    display: none !important;
+}
+
+/* Custom dropdown */
+.custom-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+}
+
+.custom-dropdown.visible {
+    display: block;
+}
+
+.custom-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.custom-dropdown-item:hover {
+    background: #f0f0f0;
 }

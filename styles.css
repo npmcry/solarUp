@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* Ensure welcome screen fully covers viewport */
 .welcome-container {
     position: fixed;
@@ -48,8 +47,6 @@
 }
 
 /* Additional styling for other elements */
-=======
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -162,13 +159,9 @@ body.night::before, body.night::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-<<<<<<< HEAD
     gap: 20px; /* Adjust the gap between elements */
     opacity: 0; /* Start hidden */
     transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
-=======
-    gap: 30px; /* Adjust the gap between elements */
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
 }
 
 h1 {
@@ -177,11 +170,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-<<<<<<< HEAD
 button.yellow-button {
-=======
-button {
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
     background: #ffcc00;
     color: white;
     border: none;
@@ -190,7 +179,6 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background 0.3s;
-<<<<<<< HEAD
     margin-bottom: 30px; /* Adjust the margin to control the gap */
 }
 
@@ -207,22 +195,10 @@ button.settings-icon i {
     box-shadow: none;
 }
 
-=======
-}
-
-button:hover {
-    background: #e6b800;
-}
-
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
 /* Container for search input and icon */
 .search-container {
     position: relative;
     width: 100%;
-<<<<<<< HEAD
-=======
-    max-width: 400px;
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
 }
 
 /* Style for search input */
@@ -235,7 +211,6 @@ button:hover {
     outline: none;
     box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
     text-align: left;
-<<<<<<< HEAD
     appearance: none; /* Remove default styling */
     -webkit-appearance: none; /* Safari */
     -moz-appearance: none; /* Firefox */
@@ -250,24 +225,16 @@ button:hover {
 /* Hide the default dropdown arrow in certain browsers */
 .search-container select::-ms-expand {
     display: none;
-=======
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
 }
 
 /* Style for search icon */
 .search-icon {
     position: absolute;
     top: 50%;
-<<<<<<< HEAD
     right: 40px; /* Adjust magnifying glass inside of search container */
     transform: translateY(-50%);
     color: #999;
     pointer-events: none; /* Ensure the icon doesn't interfere with input events */
-=======
-    right: 20px; /* Adjust magnifying glass inside of search container */
-    transform: translateY(-50%);
-    color: #999;
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
 }
 
 /* Search Solar Panel text alignment */
@@ -315,21 +282,13 @@ form {
     background: url('cloud.png') no-repeat center center;
     background-size: contain;
     width: 200px;
-<<<<<<< HEAD
     height: 300px;
     top: 25%;
-=======
-    height: 100px;
-    top: 15%;
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
     left: -200px;
     animation: moveClouds 60s linear infinite;
 }
 
-<<<<<<< HEAD
 /* Cloud animations */
-=======
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f
 @keyframes moveClouds {
     0% {
         left: -200px;
@@ -370,7 +329,6 @@ form {
     background: rgba(52, 52, 54, 0.353);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-<<<<<<< HEAD
 
 /* Add this to your styles.css file */
 .welcome-container {
@@ -513,5 +471,3 @@ input[list]::-webkit-calendar-picker-indicator {
 .custom-dropdown-item:hover {
     background: #f0f0f0;
 }
-=======
->>>>>>> f86b66453fcaff3ff51ff201688239a59a82471f

@@ -1,3 +1,4 @@
+// Return to this later, not implemented yet
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 

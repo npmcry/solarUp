@@ -306,21 +306,25 @@ form {
     right: 50px; /* Adjust as needed to move away from the edge */
     top: 50%;
     transform: translateY(-50%);
-    width: 300px; /* Adjust width as needed */
+    width: 400px; /* Adjust width as needed */
     padding: 20px;
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    background: rgba(255, 255, 255, 0.448); /* Semi-transparent background */
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(246, 242, 242, 0.1);
     z-index: 10;
+    max-height: 90%;
+    overflow-y: auto;
 }
 
 .solar-info h2 {
     margin: 0 0 10px;
     font-size: 20px;
+    color:#fff;
 }
 
 .solar-info p {
     margin: 5px 0;
+    color:#fff;
 }
 
 .modern-box {

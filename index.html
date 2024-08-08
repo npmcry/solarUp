@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--Added Charts.js-->
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script> <!--Added Firebase App SDK-->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script> <!--Added Firestore SDK-->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOC0z0vkRlgoCq1SOl1aPkir6py4y1bCQ",
+            authDomain: "solarup-c2487.firebaseapp.com",
+            projectId: "solarup-c2487",
+            storageBucket: "solarup-c2487.appspot.com",
+            messagingSenderId: "958248093706",
+            appId: "1:958248093706:web:cebfe3d694bdab6ffb37f3"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
 </head>
 <body>
     <!-- Welcome Page with Google Sign-In -->
@@ -52,10 +71,15 @@
     <div class="cloud"></div>
     <div class="solar-info modern-box" id="solarInfo">
         <h2>Solar Panel Information</h2>
+        <canvas id="energyChart"></canvas> <!--Added this for the energy chart-->
+        <canvas id="batteryChart"></canvas> <!--Added this for the battery chart-->
+        <canvas id="efficiencyChart"></canvas> <!--Added this for efficiency chart-->
+        <canvas id="gridChart"></canvas> <!-- Added this for grid chart-->
         <p id="energyUsage">Energy Usage: -- kW</p>
         <p id="batteryStatus">Battery Status: -- %</p>
         <p id="panelEfficiency">Panel Efficiency: -- %</p>
         <p id="gridStatus">Grid Status: --</p>
+        <div id="uuidLog" class="uuid-log"></div> <!-- UUID Log Container -->
     </div>
 
     <!-- Settings Page -->
@@ -108,3 +132,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+

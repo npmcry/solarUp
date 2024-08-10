@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluetooth Service and Characteristic Discovery</title>
+</head>
+<body>
+    <h1>Bluetooth Service and Characteristic Discovery</h1>
+    <button id="connectButton">Scan and Discover Services</button>
+
+    <div id="output" style="white-space: pre-wrap;"></div>
+
+    <script>
+        // Function to log messages to the console and the output div
+        function log(message) {
+            console.log(message);
+            document.getElementById('output').textContent += message + '\n';
+        }
+
+        // Function to convert an ArrayBuffer to a formatted string with groups of 4 hex digits
+        function toFormattedString(buffer) {
+            const hexArray = Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2));
+            const hexString = hexArray.join('');
+            const formattedString = hexString.match(/.{1,4}/g).join(' ');
+            return formattedString.toUpperCase();
+        }
+
+        // Function to get the characteristic name based on its UUID
+        function getCharacteristicName(uuid) {
+            switch (uuid.toLowerCase()) {
+                case '00002a24-0000-1000-8000-00805f9b34fb':
+                    return 'Model Number String';
+                case '00002a26-0000-1000-8000-00805f9b34fb':
+                    return 'Firmware Revision String';
+                case '00002a27-0000-1000-8000-00805f9b34fb':
+                    return 'Hardware Revision String';
+                case '00002a29-0000-1000-8000-00805f9b34fb':
+                    return 'Manufacturer Name String';
+                case '467daa96-bd29-2b88-f750-1ebe82081902':
+                    return 'Notify Characteristic';
+                default:
+                    return 'Unknown Characteristic';
+            }
+        }
+
+        // Event listener for the "Scan and Discover Services" button
+        document.getElementById('connectButton').addEventListener('click', async () => {
+            try {
+                // Request a Bluetooth device with any service
+                const device = await navigator.bluetooth.requestDevice({
+                    acceptAllDevices: true,
+                    optionalServices: [
+                        '2997855e-05b6-2c36-86a5-6c9856c73f4d', // First service UUID
+                        '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0'  // Second service UUID
+                    ]
+                });
+
+                log("Connecting to GATT server...");
+                const server = await device.gatt.connect();
+
+                // Discover all primary services on the device
+                const services = await server.getPrimaryServices();
+
+                // Loop through each service discovered
+                for (const service of services) {
+                    log(`\nUnknown Service`);
+                    log(`UUID: ${service.uuid}`);
+                    log(`PRIMARY SERVICE`);
+
+                    // Discover all characteristics for this service
+                    const characteristics = await service.getCharacteristics();
+
+                    // Loop through each characteristic within the service
+                    for (const characteristic of characteristics) {
+                        const characteristicName = getCharacteristicName(characteristic.uuid);
+                        log(`\n${characteristicName}`);
+                        log(`UUID: ${characteristic.uuid}`);
+
+                        const properties = Object.keys(characteristic.properties).filter(prop => characteristic.properties[prop]);
+                        log(`Properties: ${properties.join(', ')}`);
+
+                        // Check if the characteristic supports reading
+                        if (characteristic.properties.read) {
+                            const value = await characteristic.readValue();
+                            const decoder = new TextDecoder('utf-8');
+                            const stringValue = decoder.decode(value);
+                            log(`Value: ${stringValue}`);
+                            const hexValue = toFormattedString(value.buffer);
+                            log(`Hexadecimal Value: ${hexValue}`);
+                        } else {
+                            log(`Value: N/A`);
+                        }
+
+                        // Check if the characteristic supports notifications
+                        if (characteristic.properties.notify && characteristic.uuid.toLowerCase() === '467daa96-bd29-2b88-f750-1ebe82081902') {
+                            await characteristic.startNotifications();
+                            characteristic.addEventListener('characteristicvaluechanged', (event) => {
+                                const value = event.target.value;
+                                const decoder = new TextDecoder('utf-8');
+                                const stringValue = decoder.decode(value);
+                                log(`Decoded Notification Value: ${stringValue}`);
+                                const formattedValue = toFormattedString(value.buffer);
+                                log(`Notification Value (Hex): ${formattedValue}`);
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                log('Error: ' + error);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

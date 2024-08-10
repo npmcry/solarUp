@@ -15,7 +15,11 @@
     background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
     transition: opacity 1s ease-in-out;
 }
-
+#welcomeMessage {
+    font-size: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+}
 .background-video {
     position: absolute;
     top: 0;
@@ -26,6 +30,14 @@
     z-index: -1;
 }
 
+.weather-info {
+    font-size: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
 .sign-in-container {
     margin-top: 20px;
     display: flex;
@@ -34,7 +46,7 @@
 }
 
 .g_id_signin iframe {
-    border-radius: 10px !important;
+    border-radius: 30px !important;
     overflow: hidden !important;
 }
 
@@ -142,7 +154,7 @@ body.night::before, body.night::after {
     }
 }
 
-/* Code for glass container */
+/* Glass container */
 .container {
     background: rgba(255, 255, 255, 0);
     padding: 30px;
@@ -334,55 +346,6 @@ form {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Add this to your styles.css file */
-.welcome-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    color: #fff;
-    opacity: 1;
-    background: rgba(0,0,0,0.7);
-    transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
-}
-
-#welcomeMessage {
-    font-size: 50px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.weather-info {
-    font-size: 16px;
-    margin-bottom: 20px;
-    text-align: center;
-    width: 100%;
-    position: relative;
-}
-
-.container {
-    display: none; /* Ensure main content is hidden initially */
-    visibility: hidden;
-    opacity: 0; /* Start hidden */
-    transition: opacity 1s ease-in-out, visibility 0s linear 1s; /* Delay visibility change to ensure opacity transition is completed */
-}
-
-.background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the video covers the entire area without zooming in */
-    z-index: -1; /* Ensures the video stays in the background */
-}
-
 /* Settings Page */
 .settings-page {
     position: fixed;
@@ -475,3 +438,4 @@ input[list]::-webkit-calendar-picker-indicator {
 .custom-dropdown-item:hover {
     background: #f0f0f0;
 }
+

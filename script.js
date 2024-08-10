@@ -87,15 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         weatherInfo.textContent = 'Unable to fetch location';
     });
 
-    // Apply styles to the Google Sign-In button after it loads
-    setTimeout(() => {
-        const googleSignInButton = document.querySelector('.g_id_signin iframe');
-        if (googleSignInButton) {
-            googleSignInButton.style.borderRadius = '10px';
-            googleSignInButton.style.overflow = 'hidden';
-        }
-    }, 500);
-
     // Initialize charts
     const energyCtx = document.getElementById('energyChart').getContext('2d');
     const batteryCtx = document.getElementById('batteryChart').getContext('2d');
@@ -271,14 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     fetchDataAndDisplay();
-
-    function updateChart(chart, label, data) {
-        chart.data.labels.push(label);
-        chart.data.datasets[0].data.push(data);
-        chart.update();
-    }
 });
-
 
 // Function to scan for Bluetooth devices and connect
 function onScanButtonClick() {
@@ -534,3 +518,4 @@ function fetchDataAndDisplay() {
           gridChart.update();
       });
 }
+
